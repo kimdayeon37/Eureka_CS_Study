@@ -1,0 +1,22 @@
+name: Notify Slack on .md file creation
+
+on:
+  push:
+    paths:
+      - '**/*.md'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Notify Slack
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.md$')
+          if [ -n "$FILES" ]; then
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"New .md file created: '"$FILES"'"}' $SLACK_WEBHOOK_URL
+          fi
