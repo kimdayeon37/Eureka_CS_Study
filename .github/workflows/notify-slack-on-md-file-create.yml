@@ -14,15 +14,19 @@ jobs:
         with:
           fetch-depth: 2
 
+      - name: Get commit details
+        id: commit_info
+        run: |
+          echo "COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')" >> $GITHUB_ENV
+          echo "COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')" >> $GITHUB_ENV
+          echo "CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD | grep '\.md$')" >> $GITHUB_ENV
+
       - name: Notify Slack
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
-          COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')
-          REPO_NAME=${{ github.repository }}
-          FILES=$(git diff --name-only HEAD~1 HEAD | grep '\.md$')
-          if [ -n "$FILES" ]; then
-            for FILE in $FILES; do
-              curl -X POST -H 'Content-type: application/json' --data '{"text":"'"$COMMIT_AUTHOR"' 님이 '"$REPO_NAME"' 에 '"$FILE"' 을 추가하셨어요! 확인해보세요!"}' $SLACK_WEBHOOK_URL
+          if [ -n "$CHANGED_FILES" ]; then
+            for FILE in $CHANGED_FILES; do
+              curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"${COMMIT_AUTHOR} 님이 ${GITHUB_REPOSITORY} 에 ${FILE} 을 추가하셨어요! 확인해보세요!\"}" $SLACK_WEBHOOK_URL
             done
           fi
