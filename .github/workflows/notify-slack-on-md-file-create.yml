@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 2
 
       - name: Notify Slack
         env:
@@ -18,7 +20,7 @@ jobs:
         run: |
           COMMIT_AUTHOR=$(git log -1 --pretty=format:'%an')
           REPO_NAME=${{ github.repository }}
-          FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep '\.md$')
+          FILES=$(git diff --name-only HEAD~1 HEAD | grep '\.md$')
           if [ -n "$FILES" ]; then
             for FILE in $FILES; do
               curl -X POST -H 'Content-type: application/json' --data '{"text":"'"$COMMIT_AUTHOR"' 님이 '"$REPO_NAME"' 에 '"$FILE"' 을 추가하셨어요! 확인해보세요!"}' $SLACK_WEBHOOK_URL
