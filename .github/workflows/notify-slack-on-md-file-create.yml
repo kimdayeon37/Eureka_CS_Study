@@ -11,16 +11,14 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
 
       - name: Get commit details
         id: commit_info
         run: |
           AUTHOR=$(git log -1 --pretty=format:'%an')
-          COMMITTER_EMAIL=$(git log -1 --pretty=format:'%ae')
-          COMMIT_MESSAGE=$(git log -1 --pretty=format:'%s')
           echo "AUTHOR=${AUTHOR}" >> $GITHUB_ENV
-          echo "COMMITTER_EMAIL=${COMMITTER_EMAIL}" >> $GITHUB_ENV
-          echo "COMMIT_MESSAGE=${COMMIT_MESSAGE}" >> $GITHUB_ENV
 
       - name: Find added .md files
         id: find_files
