@@ -12,7 +12,7 @@ jobs:
       - name: Check out the repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 2
+          fetch-depth: 0  # 모든 히스토리를 가져옵니다.
 
       - name: Get commit details
         id: commit_info
@@ -23,7 +23,7 @@ jobs:
       - name: Find added .md files
         id: find_files
         run: |
-          ADDED_FILES=$(git diff --diff-filter=A --name-only HEAD~1 HEAD | grep '\.md$' || true)
+          ADDED_FILES=$(git show --pretty="" --name-only --diff-filter=A | grep '\.md$' || true)
           echo "ADDED_FILES=${ADDED_FILES}" >> $GITHUB_ENV
           echo "Added files: $ADDED_FILES"
 
