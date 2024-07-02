@@ -113,3 +113,62 @@
 
 
 * 약 10억개의 노드가 있고 각 노드가 2개씩의 간선만 있는 상황이라고 할 때, 인접 행렬로 구현한 그래프에서는 한 정점의 차수를 구할 때 10억번의 연산을 수행할 것이다 반면, 인접 리스트로 구현한 그래프에서는 2번의 연산만 수행하면 된다.
+
+
+### 경로 탐색(DFS VS BFS)
+
+#### 너비 우선 탐색(BFS)
+
+* **탐색을 시작하는 정점에서 가까운 정점을 먼저 탐색하는 방식**이다. 먼저 발견한 정점과 인접한 정점들을 탐색하면서 큐에 삽입한다. 이럴 경우 이전에 방문한 정점을 큐에 삽입 하면 끊임 없이 탐색을 반복할 수 있기 때문에,
+
+* 탐색한 정점을 큐에 넣기 전에 이전에 방문했는지 반드시 확인해야 함.
+
+```java
+    public static void bfs(int start) {
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(start);
+        // 현재 노드를 방문 처리
+        visited[start] = true;
+        // 큐가 빌 때까지 반복
+        while(!q.isEmpty()) {
+            // 큐에서 하나의 원소를 뽑아 출력
+            int x = q.poll();
+            System.out.print(x + " ");
+            // 해당 원소와 연결된, 아직 방문하지 않은 원소들을 큐에 삽입
+            for(int i = 0; i < graph[x].size(); i++) {
+                int y = graph[x].get(i);
+                if(!visited[y]) {
+                    q.offer(y);
+                    visited[y] = true;
+                }
+            }
+        }
+    }
+```
+![image](https://github.com/gawgjiug/Eureka_CS_Study/assets/99489686/06e209af-e9f1-4d57-be69-6edd39649378)
+
+### 깊이 우선 탐색(DFS)
+
+* 깊이 우선 탐색은 **시작 정점에서 탐색 가능한 최대 깊이의 정점까지 탐색한다** 재귀 호출 또는 스택으로 구현할 수 있다.
+
+```java
+    public static void dfs(int x) {
+        // 현재 노드를 방문 처리
+        visited[x] = true;
+        System.out.print(x + " ");
+        // 현재 노드와 연결된 다른 노드를 재귀적으로 방문
+        for (int i = 0; i < graph[x].size(); i++) {
+            int y = graph[x].get(i);
+            if (!visited[y]) dfs(y);
+        }
+    }
+```
+
+
+
+---
+
+### 예상 질문
+
+* 트리와 그래프의 차이점은 무엇인가?
+* BFS와 DFS의 차이점은 무엇인가?
