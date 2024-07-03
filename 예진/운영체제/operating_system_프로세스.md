@@ -5,10 +5,10 @@
 컴퓨터에서 실행 중인 하나의 프로그램 의미  
 <b>PCB(Process Control Block)</b> 프로세스 제어 블록
 
-프로세스에 할당된 메모리 영역
+프로세스에 할당된 메모리 영역  
 ![alt text](./images/image-3.png)
 
-프로세스의 메모리 영역 구조
+프로세스의 메모리 영역 구조  
 ![alt text](./images/image-4.png)
 
 스택 영역: LIFO(후입선출)  
