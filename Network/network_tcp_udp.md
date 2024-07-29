@@ -22,13 +22,13 @@
 
 데이터를 주고받기 전에 패킷을 전송할 경로인 가상 회선을 설정해서 모든 패킷을 같은 경로로 전송
 
-![alt text](image-11.png)
+![alt text](./image/image-11.png)
 
 - 데이터그램방식
 
 패킷마다 최적의 경로로 전송되는 방식, 송신부에서 보낸 패킷의 순서와 수신부에 도착하는 패킷의 순서가 다를 수 있음
 
-![alt text](image-10.png)
+![alt text](./image/image-10.png)
 
 <br />
 
@@ -55,12 +55,12 @@ URG - 긴급의 약자로, 다른 데이터보다 우선순위가 높은 데이�
 3-way 핸드셰이킹
 
 데이터를 본격적으로 주고받기 전에 상대방 컴퓨터와 세션을 수립하는 과정
-![alt text](image-9.png)
+![alt text](./image/image-9.png)
 
 4-way 핸드셰이킹
 
 TCP 연결을 해제할 때 이뤄지는 과정
-![alt text](image-8.png)
+![alt text](./image/image-8.png)
 
 <br />
 
@@ -78,7 +78,7 @@ TCP의 가장 큰 특징인, 데이터 신뢰성을 보장하기 위한 제어 �
 
 송신부에서 데이터를 보낸 후, ACK 메시지를 받을 때까지 다음 데이터를 보내지 않고 기다리는 방식
 
-![alt text](image-7.png)
+![alt text](./image/image-7.png)
 
 2. 슬라이딩 윈도우
 
@@ -87,7 +87,7 @@ TCP의 가장 큰 특징인, 데이터 신뢰성을 보장하기 위한 제어 �
 수신 여부와 상관없이 일정 크기의 데이터를 연속적으로 보내서 ACK 메시지를 받아야만 다음 메시지를 보낼 수 있는 정지-대기 방식의 단점을 보완
 
 윈도우 크기가 5일 때, 슬라이딩 윈도우는 다음과 같이 동작한다.
-![alt text](image-6.png)
+![alt text](./image/image-6.png)
 
 2️⃣혼잡제어
 
@@ -120,7 +120,7 @@ TCP의 가장 큰 특징인, 데이터 신뢰성을 보장하기 위한 제어 �
 5. 빠른 재전송
 
 Duplicate ACK가 3번 발생하면 해당 시점의 윈도우 크기를 1/2로 줄이고, ACK 메시지를 받으면 다시 윈도우 크기를 키우는 방식
-![alt text](image-5.png)
+![alt text](./image/image-5.png)
 
 3️⃣오류제어
 
@@ -140,19 +140,19 @@ Duplicate ACK가 3번 발생하면 해당 시점의 윈도우 크기를 1/2로 �
 
 송신부에서 데이터를 1개만 보내고 메시지를 기다려야 하기 때문에 ARQ(재전송 요청) 방식 사용
 
-![alt text](image-4.png)
+![alt text](./image/image-4.png)
 
 2. Go-Back-N ARQ
 
 송신부에서 연속적으로 데이터를 보냈을 때 누락된 데이터가 있으면 송신부에서 해당 데이터부터 재전송하는 방식
 
-![alt text](image-3.png)
+![alt text](./image/image-3.png)
 
 3. Selective-Request ARQ
 
 송신부에서 연속적으로 데이터를 보냈을 때 누락된 데이터가 있으면 수신부에서 해당 데이터만 재전송을 요청하는 방식
 
-![alt text](image-2.png)
+![alt text](./image/image-2.png)
 
 <br />
 
@@ -172,7 +172,7 @@ TCP와 달리 핸드셰이킹 과정 없이 패킷을 바로 송수신함
 
 - 데이터의 전송 속도 빠름
 
-![alt text](image-1.png)
+![alt text](./image/image-1.png)
 
 <br />
 
@@ -187,4 +187,4 @@ TCP와 달리 핸드셰이킹 과정 없이 패킷을 바로 송수신함
 체크섬을 만들기 위한 데이터를 모두 더한다.
 
 오버플로 되는 캐리가 발생하면 해당 캐리를 떼서 데이터에 다시 더한 후 1의 보수를 취해 체크섬을 만든다.
-![alt text](image.png)
+![alt text](./image/image.png)
