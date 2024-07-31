@@ -20,4 +20,112 @@
 
 * 웹 소켓이 등장하기 전 주로 사용되던 HTTP 프로토콜을 기반으로 한 실시간 통신 방식은 어떤 것들이 있을까??
 
-**미완 임시저장**
+#### 폴링(Polling)
+* ![폴링](https://github.com/user-attachments/assets/a8128a61-06ec-4381-bf20-0d3705aeab8b)
+
+* 폴링은 클라이언트가 주기적으로 서버에 요청을 보내는 방식을 말한다. 기본적으로 `일정시간`을 정해 놓고 새로운 데이터가 있는지 주기적으로 서버에 요청을 보내서 확인하게 된다.
+
+* 이때, 새로운 데이터가 없더라도 서버는 응답을 보내게 된다.
+
+```javascript
+// 클라이언트
+setInterval(function(){
+    fetch('/server').then(function(response){
+        console.log(response);
+    });
+}, 5000); // 5초마다 서버에 요청
+
+// 서버 (Node.js)
+app.get('/server', function(req, res){
+    res.send('새로운 데이터');
+});
+```
+
+* 간단한 메커니즘으로 구현이 매우 쉽다는 장점이 있지만, `불필요한 요청` 의 수가 증가할 수 있고 이는 서버 비용의 증가로 이어진다.
+
+* 그리고 요청과 응답사이의 `지연 시간`이 발생하기 때문에 실시간통신이 제한될 수 밖에 없다.
+
+#### 롱 폴링(Long Polling)
+
+* ![롱폴링](https://github.com/user-attachments/assets/5c7182e9-aa3a-429a-a121-d550bfdab886)
+
+* 롱 폴링은 `폴링`을 조금 개선한 방식을 말하는데,
+
+* 먼저 클라이언트가 서버에게 요청을 보내면, 서버는 새로운 데이터가 있는지 확인하게 되고, 일정 시간 동안 새로운 데이터가 없다면 `Time Out`을 발생시키고 응답을 보낸다.
+
+* 반면에 새로운 데이터가 있다면 즉시 새로운 데이터에 대한 응답(Response)을 보낸다.
+
+```javascript
+// 클라이언트
+function longPoll(){
+    fetch('/server').then(function(response){
+        console.log(response);
+        longPoll();
+    });
+}
+longPoll();
+
+// 서버 (Node.js)
+app.get('/server', function(req, res){
+    setTimeout(function(){
+        res.send('새로운 데이터');
+    }, 10000); // 10초 후에 응답
+});
+```
+
+* 새로운 데이터가 있거나, 설정한 10초의 시간이 지나면 응답을 보내는 것.
+
+* 이러한 방식을 사용하면 `폴링`보다는 데이터 업데이트에 반응하는 속도는 빨라지지만, 서버의 부담이 커진다.
+
+* 서버가 클라이언트로부터 요청을 받을 때 부터 응답을 보내기 까지 클라이언트와의 연결이 지속되는데, 동시에 여러 클라이언트가 서비스를 사용하면 그만큼의 연결을 유지해야 하므로 부하가 발생한다.
+
+
+#### 웹 소켓
+
+* 웹 소켓 통신은 다음과 같은 방식으로 이루어진다.
+
+* ![웹소켓](https://github.com/user-attachments/assets/620b7732-7f45-487a-8e75-b5a874e6e288)
+
+
+* 클라이언트가 서버에게 Websocket 을 연결하자는 요청을 HTTP 를 통해 전송한다. 그것이 가능한 경우에 서버가 이를 수락하는 응답을 HTTP로 보내게 된다.
+
+* 이러한 handshake 과정을 거치고 나면 연결이 이루어지고, 그 때부터 클라이언트와 서버는 HTTP가 아닌 WebSocket 프로토콜을 사용하여 소통한다.
+
+* HTTP의 `편지`방식이 아니라, `전화통화`가 이루어지는 것. 여기서 클라이언트와 서버는 자유롭게 서로에게 메시지를 보낼 수 있게된다.
+
+* `WebSocket` 에서의 통신은 헤더의 크기가 작고, 오버헤드가 적기 때문에 HTTP 보다 효율적인 통신이 가능하다.
+
+ > 헤더는 우편물에 붙은 송장 과 비슷한것.
+
+```js
+GET /socket
+Host: yong-nyong-tistory.com
+Origin: https://gwagjiug.com
+Connection: Upgrade
+Upgrade: websocket
+Sec-WebSocket-Key: Ivyio/9s+lYongNyongczP8Q==
+Sec-WebSocket-Version: 13
+```
+
+* 이러한 연결은 클라이언트와 서버 둘 중 한쪽이 연결을 종료하자는 메시지를 보낼 때 까지 지속된다. 한쪽이 `close` 프레임을 보내면, 다른쪽이 이를 확인하고 `close` 프레임을 응답으로 보냄으로써 연결이 종료되는 것.
+
+> 만약에 클라이언트의 폰 혹은 PC가 `close`를 보내지 못하고 꺼지게 된다면?
+
+* 비정상적인 종료를 감지하는 방법들이 있다.
+
+* 지정된 시간 동안 메시지가 없을 시 확인 패킷을 보내는 방법, 주기족으로 ping,pong 프레임을 주고 받아서 서로의 접속 여부를 확인하는 방법도있다.
+
+* WebSocket은 하나의 연결을 끝까지 유지하고, 그 과정에서도 적은 자원만 소모하기 때문에 Long Polling 만큼 서버에 부담을 주지 않을 수 있는 것
+
+---
+#### 웹소켓의 한계점
+
+* 웹 소켓은 서버의 설계에 따라 구현이 복잡해질 수 있다. 특히 [로드밸런싱](https://github.com/gawgjiug/Eureka_CS_Study/blob/main/Network/network_load_balancing.md) 이 적용된 서버에서는 고려하고 설정할 부분이 많아지는데,
+
+* 로드밸런싱은 기본적으로 서러 여러 대가 클라이언트 요청을 나눠서 받는 방식인데, 웹 소켓은 특정 서버와의 지속적인 연결 안에서만 이루어지기 때문에 한 서버와 웹 소켓 통신을 시작하면 이후로도 계속 그 서버로만 데이터가 전송되도록 설정해야한다.
+
+* NGINX,AWS ELB 등 WebSocket을 처리할 수 있는 로드 밸런서를 선택하여 구성하는 등 방법을 찾아 해결해야 한다.
+
+* WebSocket의 기본 프로토콜인 WS 는 통신이 암호화 되어있지 않기 때문에 SSL/TLS3 인증서를 발급 받은 뒤 이를 사용하여 WSS를 설정해야 한다.
+
+* 그리고 알아둬야 할 것이 기존의 `Polling` 등의 방식 보다는 훨씬 덜하지만 WebSocket도 서버에 부담을 주는 것은 마찬가지이기 때문에 구현하고자 하는 서비스에 가장 적절한 선택을 하는 것이 중요하다.
