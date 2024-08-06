@@ -193,3 +193,6 @@ html {
 * `reset CSS` 는 CSS의 style을 초기화 시키는 것이라면,
 
 * `normalize CSS` 는 브라우저의 사용하기 좋은 기본값은 유지하면서 브라우저간의 차이점을 수정하는 코드이다.
+
+* normalize CSS는 CDN 기법을 사용하여 head 영역에 link 태그로 삽입할 수 있으며 부분적으로 개선하기 때문에 성능면에서 유리.
+
