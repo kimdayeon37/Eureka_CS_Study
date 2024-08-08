@@ -14,10 +14,12 @@
 2. 방문하지 않은 정점 중 비용이 가장 적게 드는 정점에 방문한다. 해당 정점과 연결된 다른 정점의 비용을 갱신해야 하는지 확인한다. 만약 해당 정점을 거쳐 다른 정점에 방문할 때 기존보다 적은 비용이 든다면 비용을 갱신한다.
 3. 모든 정점을 방문할 때까지 이와 같은 방식으로 정점  방문 비용을 갱신한다. 모든 정점을 방문했다면 알고리즘 수행을 종료한다.
 
-![alt text](image.png)
+![image](https://github.com/gawgjiug/Eureka_CS_Study/assets/93921784/0acf945e-75c1-42f9-b655-e5f7bdae03d0)
+
 
 ## 5.3.2 벨만-포드 알고리즘
 
 - **간선의 가중치가 음수인 경우도 적용하여** 정점의 수 -1만큼 간선을 탐색하면서 **다른 정점까지의 최단 거리를 구하는 알고리즘**
 - 정점의 수만큼 탐색을 수행했을 때 비용이 갱신되면 음의 사이클이 존재하는 것으로 판단하며, 이때는 최소 비용이 무한하게 줄어들어서 알고리즘을 적용할 수 없다.
-![alt text](image-1.png)
+<img width="1389" alt="image" src="https://github.com/gawgjiug/Eureka_CS_Study/assets/93921784/ef538e18-daa6-40fb-b72e-0004db5a07dc">
+<img width="1389" alt="image" src="https://github.com/gawgjiug/Eureka_CS_Study/assets/93921784/ecc2e159-79ad-46e7-9c7a-11eca276e284">

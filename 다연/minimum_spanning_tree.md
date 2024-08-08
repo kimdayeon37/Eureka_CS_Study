@@ -9,7 +9,9 @@
 - 정점 기준
 - **임의의 정점부터 가장 작은 간선으로 연결된 정점을 트리에 추가하면서 최소 신장 트리를 생성하는 방식**
 
-![alt text](image.png)
+<img width="1107" alt="image" src="https://github.com/gawgjiug/Eureka_CS_Study/assets/93921784/c5b7bccc-f108-459f-b731-1753f0b13363">
+<img width="1106" alt="image" src="https://github.com/gawgjiug/Eureka_CS_Study/assets/93921784/149df640-05a9-44df-a57f-7e34fd6eae05">
+
 
 1. 최소 신장 트리를 구하기 위한 그래프로, 간선의 가중치가 각각 다르다.
 2. 시작 정점은 S로 탐색 가능한 정점은 A, B, C이다. 그 중 간선의 가중치가 3으로 가장 작은 정점 A를 트리에 추가한다.
@@ -26,6 +28,7 @@
     - 가중치의 `오름차순`으로 간선을 정렬하는 알고리즘 + 사이클의 생성 여부를 판단하는 `유니온 파인드 알고리즘`
         - 유니온 파인드 - 2개의 원소가 같은 집합에 속하는지 판단하는 알고리즘
 
-![alt text](image-1.png)
+![image](https://github.com/gawgjiug/Eureka_CS_Study/assets/93921784/f184eb7e-9647-41be-b347-7c3591c1fc86)
+
 
 5번 과정에서 가중치가 다음으로 작은 간선은 A,D를 연결하는 6이다. 하지만 이 간선을 트리에 추가하면 포함하면 A, B, D 사이에 사이클이 형성되므로 선택할 수 없다. 그 다음으로 작은 간선인 C, F를 연결하는 7을 선택한다. 그 다음으로는 E, F를 연결하는 9를 선택하여 최소신장트리를 완성한다.
